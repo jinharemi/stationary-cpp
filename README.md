@@ -1,0 +1,2 @@
+# stationary-cpp
+untuk gudang
