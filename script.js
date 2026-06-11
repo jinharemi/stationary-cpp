@@ -9,6 +9,19 @@ function tukarHalaman(buka, tutup) {
     document.getElementById(tutup).classList.add('hidden');
 }
 
+function showToast(message, type = 'success') {
+    const toast = document.getElementById('toast');
+    const toastMsg = document.getElementById('toastMessage');
+    
+    toastMsg.textContent = message;
+    toast.style.borderLeftColor = type === 'success' ? 'var(--success)' : 'var(--danger)';
+    toast.style.display = 'flex';
+    
+    setTimeout(() => {
+        toast.style.display = 'none';
+    }, 4000);
+}
+
 function muatDataStok() {
     fetch(SCRIPT_URL)
     .then(res => res.json())
@@ -42,7 +55,7 @@ function hapusBaris(btn) {
     if(rows.length > 1) {
         btn.parentElement.remove();
     } else {
-        alert("Minimal harus mengambil 1 barang!");
+        showToast("Minimal harus mengambil 1 barang!", "error");
     }
 }
 
@@ -67,7 +80,7 @@ document.getElementById('formRegister').addEventListener('submit', function(e){
     };
     fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(data) })
     .then(() => {
-        alert("Akun berhasil dibuat! Silakan login.");
+        showToast("Akun berhasil dibuat! Silakan login.");
         tukarHalaman('loginBox', 'registerBox');
     });
 });
@@ -89,7 +102,7 @@ document.getElementById('formLogin').addEventListener('submit', function(e){
             tukarHalaman('gudangBox', 'loginBox');
             muatDataStok();
         } else {
-            alert(res.message);
+            showToast(res.message || "Login gagal", "error");
         }
     });
 });
@@ -108,7 +121,7 @@ document.getElementById('formGudang').addEventListener('submit', function(e){
         const inputJml = row.querySelector('.jumlah-ambil');
         
         if (inputJml.max && jumlahB > parseInt(inputJml.max)) {
-            alert(`Jumlah pengambilan untuk ${namaB} melebihi stok yang tersedia!`);
+            showToast(`Jumlah pengambilan untuk ${namaB} melebihi stok yang tersedia!`, "error");
             valid = false;
             return;
         }
@@ -118,7 +131,7 @@ document.getElementById('formGudang').addEventListener('submit', function(e){
 
     if(!valid) return;
 
-    alert("Sedang memproses dan mengirimkan notifikasi email ke Admin...");
+    showToast("Sedang memproses dan mengirimkan notifikasi email ke Admin...");
 
     const dataKirim = {
         action: "ambilBarang",
@@ -132,9 +145,11 @@ document.getElementById('formGudang').addEventListener('submit', function(e){
     .then(res => res.json())
     .then(res => {
         if(res.status === "success") {
-            alert("Sukses! Transaksi tercatat dan email notifikasi berhasil dikirim.");
+            showToast("Sukses! Transaksi tercatat dan email notifikasi berhasil dikirim.");
             document.getElementById('formGudang').reset();
             muatDataStok();
+        } else {
+            showToast("Terjadi kesalahan saat memproses pengambilan.", "error");
         }
     });
 });
