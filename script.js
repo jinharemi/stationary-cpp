@@ -1,5 +1,5 @@
 // ⚠️ GANTI DENGAN URL WEB APP GOOGLE APPS SCRIPT ASLI KAMU (Wajib Berakhiran /exec)
-const SCRIPT_URL = 'https://script.google.com/macros/library/d/1rTvvgAEjGd02RzOCFckzgQrZwAyPN5G06V3Z-dhkU7C5idy2DLI3OdAe/2';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzflNZzwqwS34FdcEqzsiS3rK4dnIiuVPJ6Zc1N0rbWhgnJkBN0GtLAqoer8YvqgJD68g/exec';
 
 let databaseStok = [];
 let namaUserSesi = "";
