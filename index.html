@@ -1,89 +1,577 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Logistik Gudang Modern</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>STATIONARY CPP KIM</title>
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <link rel="preconnect"
+        href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="style.css">
+
 </head>
+
 <body>
 
-<div class="container">
-    <div id="loginBox">
-        <h2>Sistem Logistik</h2>
-        <div class="subtitle">Masuk untuk mengambil barang</div>
-        <form id="formLogin">
-            <div class="form-group">
-                <label>Alamat Email</label>
-                <input type="email" id="loginEmail" placeholder="nama@perusahaan.com" required>
-            </div>
-            <div class="form-group">
-                <label>Kata Sandi</label>
-                <input type="password" id="loginPassword" placeholder="••••••••" required>
-            </div>
-            <button type="submit">Masuk Sistem</button>
-        </form>
-        <div class="switch-link" onclick="tukarHalaman('registerBox', 'loginBox')">Belum terdaftar? Buat akun di sini</div>
-    </div>
+    <!-- ===================================== -->
+    <!-- AUTH -->
+    <!-- ===================================== -->
 
-    <div id="registerBox" class="hidden">
-        <h2>Pendaftaran Akun</h2>
-        <div class="subtitle">Daftarkan diri Anda sebagai pengambil resmi</div>
-        <form id="formRegister">
-            <div class="form-group">
-                <label>Nama Lengkap</label>
-                <input type="text" id="regNama" placeholder="Nama lengkap Anda" required>
-            </div>
-            <div class="form-group">
-                <label>Alamat Email</label>
-                <input type="email" id="regEmail" placeholder="nama@perusahaan.com" required>
-            </div>
-            <div class="form-group">
-                <label>Kata Sandi</label>
-                <input type="password" id="regPassword" placeholder="Minimal 6 karakter" required>
-            </div>
-            <button type="submit" style="background: var(--success); color: #0f172a;">Daftar Akun</button>
-        </form>
-        <div class="switch-link" onclick="tukarHalaman('loginBox', 'registerBox')">Sudah punya akun? Login kembali</div>
-    </div>
+    <div id="authContainer"
+        class="auth-container">
 
-    <div id="gudangBox" class="hidden">
-        <h2>Pengambilan Gudang</h2>
-        <div class="subtitle">Isi rincian barang yang akan dikeluarkan</div>
-        
-        <div class="welcome-msg">
-            Sesi Aktif: <span id="namaUserAktif" style="color: var(--primary); font-weight: 600;">-</span>
+        <div class="auth-card">
+
+            <div class="logo-box">
+
+                <i class="fa-solid fa-warehouse"></i>
+
+            </div>
+
+            <h1>STATIONARY CPP KIM</h1>
+
+            <p class="subtitle">
+
+                Sistem Pengajuan Pengambilan Barang
+
+            </p>
+
+            <!-- LOGIN -->
+
+            <div id="loginFormBox">
+
+                <form id="formLogin">
+
+                    <div class="form-group">
+
+                        <input
+                            type="email"
+                            id="loginEmail"
+                            placeholder="Email"
+                            required>
+
+                    </div>
+
+                    <div class="form-group password-wrapper">
+
+                        <input
+                            type="password"
+                            id="loginPassword"
+                            placeholder="Password"
+                            required>
+
+                        <button
+                            type="button"
+                            class="toggle-password">
+
+                            <i class="fa-solid fa-eye"></i>
+
+                        </button>
+
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="btn-primary">
+
+                        Masuk
+
+                    </button>
+
+                </form>
+
+                <p class="switch-auth">
+
+                    Belum punya akun?
+
+                    <span onclick="showRegister()">
+
+                        Daftar Sekarang
+
+                    </span>
+
+                </p>
+
+            </div>
+
+            <!-- REGISTER -->
+
+            <div id="registerFormBox"
+                class="hidden">
+
+                <form id="formRegister">
+
+                    <div class="form-group">
+
+                        <input
+                            type="text"
+                            id="regNama"
+                            placeholder="Nama Lengkap"
+                            required>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <input
+                            type="email"
+                            id="regEmail"
+                            placeholder="Email"
+                            required>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <input
+                            type="password"
+                            id="regPassword"
+                            placeholder="Password"
+                            required>
+
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="btn-primary">
+
+                        Daftar Akun
+
+                    </button>
+
+                </form>
+
+                <p class="switch-auth">
+
+                    Sudah punya akun?
+
+                    <span onclick="showLogin()">
+
+                        Masuk
+
+                    </span>
+
+                </p>
+
+            </div>
+
         </div>
 
-        <form id="formGudang">
-            <div class="form-group">
-                <label>Pilih Departemen</label>
-                <select id="dept" required>
-                    <option value="">-- Pilih Departemen --</option>
-                    <option value="IT (Teknologi Informasi)">IT (Teknologi Informasi)</option>
-                    <option value="HRD & GA">HRD & GA</option>
-                    <option value="Produksi / Manufaktur">Produksi / Manufaktur</option>
-                    <option value="Gudang & Logistik">Gudang & Logistik</option>
-                    <option value="Keuangan / Finance">Keuangan / Finance</option>
-                    <option value="Pemasaran / Marketing">Pemasaran / Marketing</option>
-                </select>
-            </div>
-            
-            <label>Daftar Item Barang</label>
-            <div id="containerBarang"></div>
-            
-            <button type="button" class="btn-secondary" onclick="tambahBarisBarang()">➕ Tambah Item Barang</button>
-            <br><br><br>
-            <button type="submit" style="background: var(--success); color: #0f172a;">Konfirmasi & Ambil Barang</button>
-        </form>
     </div>
-</div>
 
-<div id="toast" class="toast">
-    <span id="toastMessage"></span>
-</div>
+    <!-- ===================================== -->
+    <!-- APP -->
+    <!-- ===================================== -->
 
-<script src="script.js"></script>
+    <div id="appLayout"
+        class="app-layout hidden">
+
+        <!-- DASHBOARD -->
+
+        <section id="homePage"
+            class="page active-page">
+
+            <div class="hero-card">
+
+                <div>
+
+                    <small>
+                        Selamat Datang
+                    </small>
+
+                    <h2>
+
+                        Halo,
+
+                        <span id="welcomeUser">
+
+                            User
+
+                        </span>
+
+                        👋
+
+                    </h2>
+
+                </div>
+
+                <i class="fa-solid fa-circle-user"></i>
+
+            </div>
+
+            <!-- STATS -->
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+
+                    <span>
+                        Total Barang
+                    </span>
+
+                    <h3 id="cardTotalBarang">
+
+                        0
+
+                    </h3>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <span>
+                        Status API
+                    </span>
+
+                    <h3 id="statusKoneksi">
+
+                        ...
+
+                    </h3>
+
+                </div>
+
+            </div>
+
+            <!-- QUICK ACTION -->
+
+            <h3 class="section-title">
+
+                Quick Action
+
+            </h3>
+
+            <div class="action-list">
+
+                <div class="action-card"
+                    onclick="showPage('pengajuanPage')">
+
+                    <i class="fa-solid fa-box"></i>
+
+                    <div>
+
+                        <h4>
+                            Buat Pengajuan
+                        </h4>
+
+                        <p>
+                            Ajukan barang baru
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="action-card"
+                    onclick="showPage('riwayatPage')">
+
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+
+                    <div>
+
+                        <h4>
+                            Riwayat
+                        </h4>
+
+                        <p>
+                            Lihat status pengajuan
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- AKTIVITAS -->
+
+            <h3 class="section-title">
+
+                Aktivitas Terbaru
+
+            </h3>
+
+            <div id="aktivitasContainer">
+
+            </div>
+
+        </section>
+
+        <!-- ===================================== -->
+        <!-- PENGAJUAN -->
+        <!-- ===================================== -->
+
+        <section id="pengajuanPage"
+            class="page hidden">
+
+            <h2 class="page-title">
+
+                Pengajuan Barang
+
+            </h2>
+
+            <div class="card">
+
+                <form id="formGudang">
+
+                    <div class="form-group">
+
+                        <label>
+
+                            Departemen
+
+                        </label>
+
+                        <select id="dept">
+
+                            <option value="">
+
+                                Pilih Departemen
+
+                            </option>
+
+                            <option>
+
+                                IT
+
+                            </option>
+
+                            <option>
+
+                                Produksi
+
+                            </option>
+
+                            <option>
+
+                                HRD
+
+                            </option>
+
+                            <option>
+
+                                Finance
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div id="containerBarang">
+
+                    </div>
+
+                    <button
+                        type="button"
+                        onclick="tambahBarisBarang()"
+                        class="btn-outline">
+
+                        + Tambah Barang
+
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="btn-primary">
+
+                        Kirim Pengajuan
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+        <!-- ===================================== -->
+        <!-- RIWAYAT -->
+        <!-- ===================================== -->
+
+        <section id="riwayatPage"
+            class="page hidden">
+
+            <h2 class="page-title">
+
+                Riwayat Pengajuan
+
+            </h2>
+
+            <div id="riwayatContainer">
+
+            </div>
+
+        </section>
+
+        <!-- ===================================== -->
+        <!-- PROFIL -->
+        <!-- ===================================== -->
+
+        <section id="profilPage"
+            class="page hidden">
+
+            <div class="profile-card">
+
+                <i class="fa-solid fa-circle-user"></i>
+
+                <h2 id="profileNama">
+
+                    User
+
+                </h2>
+
+                <p>
+
+                    Petugas Logistik
+
+                </p>
+
+                <button
+                    onclick="prosesLogout()"
+                    class="btn-danger">
+
+                    Logout
+
+                </button>
+
+            </div>
+
+        </section>
+
+        <!-- ===================================== -->
+        <!-- BOTTOM NAV -->
+        <!-- ===================================== -->
+
+        <nav class="bottom-nav">
+
+            <button
+                onclick="showPage('homePage')">
+
+                <i class="fa-solid fa-house"></i>
+
+                <span>
+                    Home
+                </span>
+
+            </button>
+
+            <button
+                onclick="showPage('pengajuanPage')">
+
+                <i class="fa-solid fa-box"></i>
+
+                <span>
+                    Pengajuan
+                </span>
+
+            </button>
+
+            <button
+                onclick="showPage('riwayatPage')">
+
+                <i class="fa-solid fa-clock-rotate-left"></i>
+
+                <span>
+                    Riwayat
+                </span>
+
+            </button>
+
+            <button
+                onclick="showPage('profilPage')">
+
+                <i class="fa-solid fa-user"></i>
+
+                <span>
+                    Profil
+                </span>
+
+            </button>
+
+        </nav>
+
+    </div>
+
+    <!-- ===================================== -->
+    <!-- MODAL SUCCESS -->
+    <!-- ===================================== -->
+
+    <div id="successModal"
+        class="modal hidden">
+
+        <div class="modal-content">
+
+            <div class="success-icon">
+
+                ✅
+
+            </div>
+
+            <h2>
+
+                PENGAJUAN TERKIRIM
+
+            </h2>
+
+            <div id="modalPengajuanInfo">
+
+            </div>
+
+            <div class="modal-buttons">
+
+                <button
+                    onclick="showPage('riwayatPage')"
+                    class="btn-primary">
+
+                    Lihat Riwayat
+
+                </button>
+
+                <button
+                    onclick="closeModal()"
+                    class="btn-outline">
+
+                    Tutup
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- TOAST -->
+
+    <div id="toast"
+        class="toast">
+
+        <span id="toastMessage">
+
+        </span>
+
+    </div>
+
+    <script src="script.js"></script>
+
 </body>
+
 </html>

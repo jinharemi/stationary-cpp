@@ -1,186 +1,711 @@
-:root {
-    --bg-color: #0a0f1c;
-    --card-bg: #111827;
-    --card-bg2: #1e2937;
-    --text-main: #f1f5f9;
-    --text-muted: #94a3b8;
-    --primary: #60a5fa;
-    --primary-hover: #3b82f6;
-    --success: #34d399;
-    --danger: #f87171;
-    --border: #334155;
+/* =========================================
+RESET
+========================================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Inter',sans-serif;
 }
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'Inter', system-ui, sans-serif;
+:root{
+
+    --primary:#2563eb;
+    --primary-dark:#1d4ed8;
+
+    --success:#10b981;
+    --danger:#ef4444;
+
+    --bg:#f6f8fc;
+    --card:#ffffff;
+
+    --text:#0f172a;
+    --muted:#64748b;
+
+    --shadow:
+    0 10px 30px rgba(15,23,42,.08);
+
+    --radius:24px;
 }
 
-body {
-    background: linear-gradient(135deg, #0a0f1c 0%, #1e2937 100%);
-    color: var(--text-main);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;   /* Diubah dari center */
-    padding: 20px;
-    overflow-y: auto;          /* Tambahan penting */
+body{
+
+    background:var(--bg);
+
+    color:var(--text);
+
+    min-height:100vh;
 }
 
-.container {
-    background: var(--card-bg);
-    padding: 48px 40px;
-    border-radius: 24px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    width: 100%;
-    max-width: 520px;
-    border: 1px solid var(--border);
-    margin: 20px 0;            /* Tambahan biar ada ruang scroll */
+.hidden{
+    display:none !important;
 }
 
-h2 {
-    text-align: center;
-    font-size: 28px;
-    font-weight: 700;
-    margin-bottom: 8px;
-    background: linear-gradient(to right, #e0f2fe, #bae6fd);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+/* =========================================
+AUTH
+========================================= */
+
+.auth-container{
+
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    padding:20px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #2563eb,
+        #4f46e5
+    );
 }
 
-.subtitle {
-    text-align: center;
-    font-size: 15px;
-    color: var(--text-muted);
-    margin-bottom: 32px;
+.auth-card{
+
+    width:100%;
+    max-width:430px;
+
+    background:white;
+
+    padding:35px 25px;
+
+    border-radius:32px;
+
+    box-shadow:
+    0 25px 60px rgba(0,0,0,.15);
 }
 
-.form-group {
-    margin-bottom: 24px;
+.logo-box{
+
+    width:90px;
+    height:90px;
+
+    margin:auto;
+
+    border-radius:50%;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:40px;
+
+    color:var(--primary);
+
+    background:
+    rgba(37,99,235,.1);
+
+    margin-bottom:20px;
 }
 
-label {
-    margin-bottom: 8px;
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--text-muted);
-    display: block;
+.auth-card h1{
+
+    text-align:center;
+
+    font-size:28px;
+
+    margin-bottom:10px;
 }
 
-input, select {
-    width: 100%;
-    padding: 16px 20px;
-    background: #1e2937;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    font-size: 16px;
-    color: var(--text-main);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+.subtitle{
+
+    text-align:center;
+
+    color:var(--muted);
+
+    margin-bottom:25px;
 }
 
-input:focus, select:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.2);
+.switch-auth{
+
+    text-align:center;
+
+    margin-top:20px;
+
+    color:var(--muted);
 }
 
-button {
-    width: 100%;
-    padding: 16px;
-    background: var(--primary);
-    color: #0f172a;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 600;
-    transition: all 0.3s;
-    margin-top: 8px;
+.switch-auth span{
+
+    color:var(--primary);
+
+    font-weight:700;
+
+    cursor:pointer;
 }
 
-button:hover {
-    background: var(--primary-hover);
-    transform: translateY(-3px);
-    box-shadow: 0 10px 15px -3px rgba(96, 165, 250, 0.3);
+/* =========================================
+FORM
+========================================= */
+
+.form-group{
+
+    margin-bottom:15px;
 }
 
-.btn-secondary {
-    background: transparent;
-    color: var(--primary);
-    border: 1.5px dashed var(--primary);
-    margin-top: 16px;
+input,
+select{
+
+    width:100%;
+
+    border:none;
+
+    background:#f1f5f9;
+
+    padding:16px;
+
+    border-radius:16px;
+
+    outline:none;
+
+    font-size:15px;
 }
 
-.barang-row {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 16px;
-    align-items: center;
-    background: var(--card-bg2);
-    padding: 12px;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    transition: all 0.2s;
+input:focus,
+select:focus{
+
+    outline:2px solid
+    rgba(37,99,235,.3);
 }
 
-.barang-row:hover {
-    border-color: var(--primary);
-    transform: translateX(4px);
+label{
+
+    display:block;
+
+    margin-bottom:8px;
+
+    font-size:14px;
+
+    font-weight:600;
 }
 
-.btn-del {
-    background: transparent;
-    color: var(--danger);
-    border: 1px solid var(--border);
-    padding: 12px;
-    width: auto;
-    border-radius: 8px;
-    cursor: pointer;
+/* =========================================
+PASSWORD
+========================================= */
+
+.password-wrapper{
+
+    position:relative;
 }
 
-.btn-del:hover {
-    background: rgba(248, 113, 113, 0.1);
+.toggle-password{
+
+    position:absolute;
+
+    right:10px;
+    top:50%;
+
+    transform:
+    translateY(-50%);
+
+    background:none;
+
+    border:none;
+
+    color:#64748b;
+
+    cursor:pointer;
 }
 
-.toast {
-    position: fixed;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--card-bg2);
-    color: var(--text-main);
-    padding: 16px 24px;
-    border-radius: 12px;
-    box-shadow: 0 10px 15px rgba(0,0,0,0.3);
-    display: none;
-    align-items: center;
-    gap: 12px;
-    z-index: 1000;
-    border-left: 4px solid var(--success);
-    min-width: 280px;
+/* =========================================
+BUTTON
+========================================= */
+
+.btn-primary{
+
+    width:100%;
+
+    border:none;
+
+    padding:16px;
+
+    border-radius:16px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #2563eb,
+        #1d4ed8
+    );
+
+    color:white;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    margin-top:10px;
 }
 
-.hidden { display: none !important; }
+.btn-primary:hover{
 
-.switch-link {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 14px;
-    color: var(--primary);
-    cursor: pointer;
-    font-weight: 500;
+    opacity:.95;
 }
 
-.switch-link:hover {
-    text-decoration: underline;
+.btn-outline{
+
+    width:100%;
+
+    padding:16px;
+
+    border-radius:16px;
+
+    border:2px dashed
+    var(--primary);
+
+    background:white;
+
+    color:var(--primary);
+
+    margin-bottom:15px;
+
+    cursor:pointer;
 }
 
-.welcome-msg {
-    background: #1e2937;
-    padding: 14px 18px;
-    border-radius: 12px;
-    font-size: 14.5px;
-    margin-bottom: 28px;
-    border-left: 4px solid var(--primary);
+.btn-danger{
+
+    width:100%;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:16px;
+
+    background:var(--danger);
+
+    color:white;
+
+    margin-top:20px;
+
+    cursor:pointer;
+}
+
+/* =========================================
+APP
+========================================= */
+
+.app-layout{
+
+    min-height:100vh;
+
+    padding-bottom:90px;
+}
+
+.page{
+
+    padding:20px;
+}
+
+/* =========================================
+HERO
+========================================= */
+
+.hero-card{
+
+    background:
+    linear-gradient(
+        135deg,
+        #2563eb,
+        #4f46e5
+    );
+
+    color:white;
+
+    padding:24px;
+
+    border-radius:28px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:20px;
+}
+
+.hero-card i{
+
+    font-size:50px;
+}
+
+.hero-card h2{
+
+    margin-top:5px;
+}
+
+/* =========================================
+STATS
+========================================= */
+
+.stats-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(2,1fr);
+
+    gap:15px;
+
+    margin-bottom:25px;
+}
+
+.stat-card{
+
+    background:white;
+
+    border-radius:22px;
+
+    padding:20px;
+
+    box-shadow:var(--shadow);
+}
+
+.stat-card span{
+
+    color:var(--muted);
+
+    font-size:13px;
+}
+
+.stat-card h3{
+
+    margin-top:10px;
+
+    font-size:28px;
+}
+
+/* =========================================
+SECTION
+========================================= */
+
+.section-title{
+
+    margin-bottom:15px;
+
+    font-size:18px;
+}
+
+/* =========================================
+ACTION
+========================================= */
+
+.action-list{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:15px;
+
+    margin-bottom:25px;
+}
+
+.action-card{
+
+    background:white;
+
+    padding:20px;
+
+    border-radius:22px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    box-shadow:var(--shadow);
+
+    cursor:pointer;
+}
+
+.action-card i{
+
+    font-size:22px;
+
+    color:var(--primary);
+}
+
+.action-card p{
+
+    color:var(--muted);
+
+    font-size:13px;
+
+    margin-top:3px;
+}
+
+/* =========================================
+CARD
+========================================= */
+
+.card{
+
+    background:white;
+
+    padding:20px;
+
+    border-radius:24px;
+
+    box-shadow:var(--shadow);
+}
+
+.page-title{
+
+    margin-bottom:20px;
+}
+
+/* =========================================
+BARANG
+========================================= */
+
+.barang-row{
+
+    background:#f8fafc;
+
+    padding:15px;
+
+    border-radius:20px;
+
+    margin-bottom:12px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+}
+
+.btn-del{
+
+    background:var(--danger);
+
+    color:white;
+
+    border:none;
+
+    padding:12px;
+
+    border-radius:12px;
+}
+
+/* =========================================
+PROFILE
+========================================= */
+
+.profile-card{
+
+    background:white;
+
+    padding:30px;
+
+    border-radius:30px;
+
+    text-align:center;
+
+    box-shadow:var(--shadow);
+}
+
+.profile-card i{
+
+    font-size:90px;
+
+    color:var(--primary);
+
+    margin-bottom:15px;
+}
+
+/* =========================================
+ACTIVITY
+========================================= */
+
+.activity-item{
+
+    background:white;
+
+    padding:18px;
+
+    border-radius:20px;
+
+    margin-bottom:12px;
+
+    box-shadow:var(--shadow);
+}
+
+/* =========================================
+BOTTOM NAV
+========================================= */
+
+.bottom-nav{
+
+    position:fixed;
+
+    bottom:0;
+    left:0;
+    right:0;
+
+    background:white;
+
+    height:75px;
+
+    display:flex;
+
+    justify-content:space-around;
+
+    align-items:center;
+
+    box-shadow:
+    0 -5px 20px rgba(0,0,0,.08);
+
+    z-index:999;
+}
+
+.bottom-nav button{
+
+    border:none;
+
+    background:none;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:4px;
+
+    align-items:center;
+
+    color:#64748b;
+
+    font-size:12px;
+
+    cursor:pointer;
+}
+
+.bottom-nav i{
+
+    font-size:22px;
+}
+
+/* =========================================
+MODAL
+========================================= */
+
+.modal{
+
+    position:fixed;
+
+    inset:0;
+
+    background:
+    rgba(0,0,0,.5);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:9999;
+
+    padding:20px;
+}
+
+.modal-content{
+
+    background:white;
+
+    width:100%;
+
+    max-width:500px;
+
+    border-radius:30px;
+
+    padding:30px;
+
+    text-align:center;
+}
+
+.success-icon{
+
+    font-size:50px;
+
+    margin-bottom:15px;
+}
+
+.modal-content h2{
+
+    margin-bottom:20px;
+}
+
+.modal-buttons{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+
+    margin-top:25px;
+}
+
+/* =========================================
+TOAST
+========================================= */
+
+.toast{
+
+    position:fixed;
+
+    left:50%;
+
+    bottom:100px;
+
+    transform:
+    translateX(-50%);
+
+    background:#0f172a;
+
+    color:white;
+
+    padding:14px 18px;
+
+    border-radius:14px;
+
+    display:none;
+
+    z-index:99999;
+}
+
+/* =========================================
+DESKTOP
+========================================= */
+
+@media(min-width:768px){
+
+    .app-layout{
+
+        max-width:900px;
+
+        margin:auto;
+    }
+
+    .action-list{
+
+        display:grid;
+
+        grid-template-columns:
+        repeat(2,1fr);
+    }
+
+    .modal-buttons{
+
+        flex-direction:row;
+    }
+
 }

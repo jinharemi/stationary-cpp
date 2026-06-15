@@ -1,207 +1,780 @@
-// ⚠️ GANTI DENGAN URL WEB APP GOOGLE APPS SCRIPT ASLI KAMU (Wajib Berakhiran /exec)
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzflNZzwqwS34FdcEqzsiS3rK4dnIiuVPJ6Zc1N0rbWhgnJkBN0GtLAqoer8YvqgJD68g/exec';
+// =====================================
+// CONFIG
+// =====================================
+
+const SCRIPT_URL =
+'https://script.google.com/macros/s/AKfycbzflNZzwqwS34FdcEqzsiS3rK4dnIiuVPJ6Zc1N0rbWhgnJkBN0GtLAqoer8YvqgJD68g/exec';
 
 let databaseStok = [];
 let namaUserSesi = "";
 
-function tukarHalaman(buka, tutup) {
-    document.getElementById(buka).classList.remove('hidden');
-    document.getElementById(tutup).classList.add('hidden');
+// =====================================
+// AUTH SWITCH
+// =====================================
+
+function showRegister() {
+
+    document
+        .getElementById("loginFormBox")
+        .classList
+        .add("hidden");
+
+    document
+        .getElementById("registerFormBox")
+        .classList
+        .remove("hidden");
 }
 
-function showToast(message, type = 'success') {
-    const toast = document.getElementById('toast');
-    const toastMsg = document.getElementById('toastMessage');
-    
-    toastMsg.textContent = message;
-    toast.style.borderLeftColor = type === 'success' ? 'var(--success)' : 'var(--danger)';
-    toast.style.display = 'flex';
-    
+function showLogin() {
+
+    document
+        .getElementById("registerFormBox")
+        .classList
+        .add("hidden");
+
+    document
+        .getElementById("loginFormBox")
+        .classList
+        .remove("hidden");
+}
+
+// =====================================
+// TOAST
+// =====================================
+
+function showToast(message) {
+
+    const toast =
+        document.getElementById("toast");
+
+    const msg =
+        document.getElementById("toastMessage");
+
+    msg.innerText = message;
+
+    toast.style.display = "block";
+
     setTimeout(() => {
-        toast.style.display = 'none';
-    }, 5000);
+
+        toast.style.display = "none";
+
+    }, 3000);
 }
 
-function muatDataStok() {
+// =====================================
+// PASSWORD TOGGLE
+// =====================================
+
+document.addEventListener("click", function(e){
+
+    if(
+        e.target.closest(".toggle-password")
+    ){
+
+        const input =
+        document.getElementById(
+            "loginPassword"
+        );
+
+        input.type =
+        input.type === "password"
+        ? "text"
+        : "password";
+    }
+
+});
+
+// =====================================
+// PAGE
+// =====================================
+
+function showPage(pageId) {
+
+    document
+        .querySelectorAll(".page")
+        .forEach(page => {
+
+            page.classList.add(
+                "hidden"
+            );
+
+        });
+
+    document
+        .getElementById(pageId)
+        .classList
+        .remove("hidden");
+
+}
+
+// =====================================
+// LOGIN
+// =====================================
+
+document
+.getElementById("formLogin")
+.addEventListener(
+"submit",
+function(e){
+
+    e.preventDefault();
+
+    const data = {
+
+        action:"login",
+
+        email:
+        document.getElementById(
+            "loginEmail"
+        ).value,
+
+        password:
+        document.getElementById(
+            "loginPassword"
+        ).value
+
+    };
+
+    fetch(
+        SCRIPT_URL,
+        {
+            method:"POST",
+            body:JSON.stringify(data)
+        }
+    )
+
+    .then(res=>res.json())
+
+    .then(res=>{
+
+        if(
+            res.status==="success"
+        ){
+
+            namaUserSesi =
+            res.nama;
+
+            localStorage.setItem(
+                "namaUser",
+                namaUserSesi
+            );
+
+            masukApp();
+
+        }else{
+
+            showToast(
+                res.message
+            );
+
+        }
+
+    })
+
+    .catch(()=>{
+
+        showToast(
+            "Gagal login"
+        );
+
+    });
+
+});
+
+// =====================================
+// REGISTER
+// =====================================
+
+document
+.getElementById("formRegister")
+.addEventListener(
+"submit",
+function(e){
+
+    e.preventDefault();
+
+    const data = {
+
+        action:"register",
+
+        nama:
+        document.getElementById(
+            "regNama"
+        ).value,
+
+        email:
+        document.getElementById(
+            "regEmail"
+        ).value,
+
+        password:
+        document.getElementById(
+            "regPassword"
+        ).value
+
+    };
+
+    fetch(
+        SCRIPT_URL,
+        {
+            method:"POST",
+            body:JSON.stringify(data)
+        }
+    )
+
+    .then(()=>{
+
+        showToast(
+            "Akun berhasil dibuat"
+        );
+
+        showLogin();
+
+    })
+
+    .catch(()=>{
+
+        showToast(
+            "Registrasi gagal"
+        );
+
+    });
+
+});
+
+// =====================================
+// MASUK APP
+// =====================================
+
+function masukApp(){
+
+    document
+    .getElementById(
+        "authContainer"
+    )
+    .classList.add(
+        "hidden"
+    );
+
+    document
+    .getElementById(
+        "appLayout"
+    )
+    .classList.remove(
+        "hidden"
+    );
+
+    document
+    .getElementById(
+        "welcomeUser"
+    )
+    .innerText =
+    namaUserSesi;
+
+    document
+    .getElementById(
+        "profileNama"
+    )
+    .innerText =
+    namaUserSesi;
+
+    muatDataStok();
+
+    renderRiwayat();
+}
+
+// =====================================
+// AUTO LOGIN
+// =====================================
+
+window.onload = ()=>{
+
+    const user =
+    localStorage.getItem(
+        "namaUser"
+    );
+
+    if(user){
+
+        namaUserSesi =
+        user;
+
+        masukApp();
+    }
+
+};
+
+// =====================================
+// LOGOUT
+// =====================================
+
+function prosesLogout(){
+
+    localStorage.removeItem(
+        "namaUser"
+    );
+
+    document
+    .getElementById(
+        "appLayout"
+    )
+    .classList.add(
+        "hidden"
+    );
+
+    document
+    .getElementById(
+        "authContainer"
+    )
+    .classList.remove(
+        "hidden"
+    );
+
+    showToast(
+        "Logout berhasil"
+    );
+
+}
+
+// =====================================
+// LOAD STOK
+// =====================================
+
+function muatDataStok(){
+
     fetch(SCRIPT_URL)
-    .then(res => {
-        if(!res.ok) throw new Error();
-        return res.json();
-    })
-    .then(data => {
-        databaseStok = data;
-        document.getElementById('containerBarang').innerHTML = '';
+
+    .then(res=>res.json())
+
+    .then(data=>{
+
+        databaseStok =
+        data;
+
+        document
+        .getElementById(
+            "cardTotalBarang"
+        )
+        .innerText =
+        data.length;
+
+        document
+        .getElementById(
+            "statusKoneksi"
+        )
+        .innerText =
+        "Online";
+
+        document
+        .getElementById(
+            "containerBarang"
+        )
+        .innerHTML = "";
+
         tambahBarisBarang();
+
     })
-    .catch(() => {
-        showToast("Gagal memuat stok barang. Cek penamaan sheet 'Stok_Barang' Anda.", "error");
+
+    .catch(()=>{
+
+        document
+        .getElementById(
+            "statusKoneksi"
+        )
+        .innerText =
+        "Error";
+
     });
+
 }
 
-function tambahBarisBarang() {
-    const container = document.getElementById('containerBarang');
-    const row = document.createElement('div');
-    row.className = 'barang-row';
+// =====================================
+// TAMBAH BARANG
+// =====================================
 
-    let opsiBarang = `<option value="">-- Pilih --</option>`;
-    databaseStok.forEach(item => {
-        opsiBarang += `<option value="${item.nama}">${item.nama} (Stok: ${item.stok})</option>`;
+function tambahBarisBarang(){
+
+    const container =
+    document.getElementById(
+        "containerBarang"
+    );
+
+    let opsi =
+    `<option value="">
+    Pilih Barang
+    </option>`;
+
+    databaseStok.forEach(item=>{
+
+        opsi += `
+        <option value="${item.nama}">
+        ${item.nama}
+        (stok ${item.stok})
+        </option>
+        `;
+
     });
+
+    const row =
+    document.createElement("div");
+
+    row.className =
+    "barang-row";
 
     row.innerHTML = `
-        <select class="pilih-barang" onchange="cekStokMaks(this)" style="flex: 2.5;" required>${opsiBarang}</select>
-        <input type="number" class="jumlah-ambil" placeholder="Jml" min="1" style="flex: 1;" required>
-        <button type="button" class="btn-del" onclick="hapusBaris(this)">✕</button>
+
+        <select class="pilih-barang">
+
+            ${opsi}
+
+        </select>
+
+        <input
+        type="number"
+        class="jumlah-ambil"
+        placeholder="Jumlah">
+
+        <button
+        type="button"
+        class="btn-del"
+        onclick="hapusBaris(this)">
+
+        Hapus
+
+        </button>
+
     `;
-    container.appendChild(row);
+
+    container.appendChild(
+        row
+    );
+
 }
 
-function hapusBaris(btn) {
-    const rows = document.querySelectorAll('.barang-row');
-    if(rows.length > 1) {
+function hapusBaris(btn){
+
+    const rows =
+    document.querySelectorAll(
+        ".barang-row"
+    );
+
+    if(rows.length > 1){
+
         btn.parentElement.remove();
-    } else {
-        showToast("Minimal harus mengambil 1 barang!", "error");
+
     }
+
 }
 
-function cekStokMaks(selectElement) {
-    const barangTerpilih = selectElement.value;
-    const inputJumlah = selectElement.nextElementSibling;
-    const itemSesuai = databaseStok.find(i => i.nama === barangTerpilih);
-    if(itemSesuai) {
-        inputJumlah.max = itemSesuai.stok;
-        inputJumlah.placeholder = "Maks " + itemSesuai.stok;
-    }
+// =====================================
+// GENERATE REQUEST ID
+// =====================================
+
+function generateRequestID(){
+
+    const random =
+    Math.floor(
+        Math.random()*999999
+    );
+
+    return `REQ-${
+        new Date().getFullYear()
+    }-${random}`;
 }
 
-// REGISTER
-document.getElementById('formRegister').addEventListener('submit', function(e){
-    e.preventDefault();
-    
-    const btnReg = e.target.querySelector('button');
-    const txtAsli = btnReg.textContent;
-    btnReg.textContent = "Mendaftarkan...";
-    btnReg.disabled = true;
+// =====================================
+// SUBMIT
+// =====================================
 
-    const data = {
-        action: "register",
-        nama: document.getElementById('regNama').value,
-        email: document.getElementById('regEmail').value,
-        password: document.getElementById('regPassword').value
+document
+.getElementById(
+    "formGudang"
+)
+.addEventListener(
+"submit",
+function(e){
+
+    e.preventDefault();
+
+    const rows =
+    document.querySelectorAll(
+        ".barang-row"
+    );
+
+    let barang = [];
+
+    rows.forEach(row=>{
+
+        barang.push({
+
+            namaBarang:
+            row.querySelector(
+                ".pilih-barang"
+            ).value,
+
+            jumlah:
+            row.querySelector(
+                ".jumlah-ambil"
+            ).value
+
+        });
+
+    });
+
+    const requestID =
+    generateRequestID();
+
+    const payload = {
+
+        action:
+        "ambilBarang",
+
+        namaPengambil:
+        namaUserSesi,
+
+        departemen:
+        document.getElementById(
+            "dept"
+        ).value,
+
+        kodeDept:"-",
+
+        barangDiambil:
+        barang
+
     };
 
-    fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(data) })
-    .then(() => {
-        btnReg.textContent = txtAsli;
-        btnReg.disabled = false;
-        showToast("Akun berhasil dibuat! Silakan login.");
-        tukarHalaman('loginBox', 'registerBox');
-    })
-    .catch(() => {
-        btnReg.textContent = txtAsli;
-        btnReg.disabled = false;
-        showToast("Gagal terhubung ke database. Periksa konfigurasi Apps Script Anda.", "error");
-    });
-});
-
-// LOGIN
-document.getElementById('formLogin').addEventListener('submit', function(e){
-    e.preventDefault();
-    
-    const btnLogin = e.target.querySelector('button');
-    const txtAsli = btnLogin.textContent;
-    btnLogin.textContent = "Memverifikasi...";
-    btnLogin.disabled = true;
-
-    const data = {
-        action: "login",
-        email: document.getElementById('loginEmail').value,
-        password: document.getElementById('loginPassword').value
-    };
-
-    fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(data) })
-    .then(res => {
-        if (!res.ok) throw new Error();
-        return res.json();
-    })
-    .then(res => {
-        btnLogin.textContent = txtAsli;
-        btnLogin.disabled = false;
-
-        if(res.status === "success") {
-            namaUserSesi = res.nama;
-            document.getElementById('namaUserAktif').innerText = namaUserSesi;
-            tukarHalaman('gudangBox', 'loginBox');
-            muatDataStok();
-        } else {
-            showToast(res.message || "Email atau Password salah!", "error");
+    fetch(
+        SCRIPT_URL,
+        {
+            method:"POST",
+            body:JSON.stringify(
+                payload
+            )
         }
-    })
-    .catch(err => {
-        btnLogin.textContent = txtAsli;
-        btnLogin.disabled = false;
-        showToast("Error Database! Periksa nama sheet 'Users' atau gunakan URL /exec yang benar.", "error");
-        console.error(err);
-    });
-});
+    )
 
-// AMBIL BARANG
-document.getElementById('formGudang').addEventListener('submit', function(e){
-    e.preventDefault();
-    
-    const rows = document.querySelectorAll('.barang-row');
-    let arrayBarang = [];
-    let valid = true;
+    .then(res=>res.json())
 
-    rows.forEach(row => {
-        const namaB = row.querySelector('.pilih-barang').value;
-        const jumlahB = parseInt(row.querySelector('.jumlah-ambil').value);
-        const inputJml = row.querySelector('.jumlah-ambil');
-        
-        if (inputJml.max && jumlahB > parseInt(inputJml.max)) {
-            showToast(`Jumlah pengambilan untuk ${namaB} melebihi stok yang tersedia!`, "error");
-            valid = false;
-            return;
+    .then(res=>{
+
+        if(
+            res.status==="success"
+        ){
+
+            simpanRiwayat(
+                requestID,
+                barang
+            );
+
+            tampilkanModal(
+                requestID,
+                barang.length
+            );
+
+            document
+            .getElementById(
+                "formGudang"
+            )
+            .reset();
+
         }
 
-        arrayBarang.push({ namaBarang: namaB, jumlah: jumlahB });
-    });
-
-    if(!valid) return;
-
-    const btnGudang = e.target.querySelector('button[type="submit"]');
-    const txtAsli = btnGudang.textContent;
-    btnGudang.textContent = "Memproses...";
-    btnGudang.disabled = true;
-
-    showToast("Sedang memproses dan mengirimkan notifikasi email ke Admin...");
-
-    const dataKirim = {
-        action: "ambilBarang",
-        namaPengambil: namaUserSesi,
-        departemen: document.getElementById('dept').value,
-        kodeDept: "-",
-        barangDiambil: arrayBarang
-    };
-
-    fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(dataKirim) })
-    .then(res => res.json())
-    .then(res => {
-        btnGudang.textContent = txtAsli;
-        btnGudang.disabled = false;
-
-        if(res.status === "success") {
-            showToast("Sukses! Transaksi tercatat dan email notifikasi berhasil dikirim.");
-            document.getElementById('formGudang').reset();
-            muatDataStok();
-        } else {
-            showToast("Terjadi kesalahan saat memproses pengambilan.", "error");
-        }
     })
-    .catch(() => {
-        btnGudang.textContent = txtAsli;
-        btnGudang.disabled = false;
-        showToast("Gagal mengirim data. Cek sisa kuota email harian Google Apps Script Anda.", "error");
+
+    .catch(()=>{
+
+        showToast(
+            "Gagal mengirim data"
+        );
+
     });
+
 });
+
+// =====================================
+// MODAL SUCCESS
+// =====================================
+
+function tampilkanModal(
+requestID,
+jumlahItem
+){
+
+    const modal =
+    document.getElementById(
+        "successModal"
+    );
+
+    const info =
+    document.getElementById(
+        "modalPengajuanInfo"
+    );
+
+    info.innerHTML = `
+
+    <p>
+
+    Nomor Pengajuan :
+    <strong>${requestID}</strong>
+
+    </p>
+
+    <br>
+
+    <p>
+
+    Jumlah Item :
+    <strong>
+    ${jumlahItem}
+    Barang
+    </strong>
+
+    </p>
+
+    <br>
+
+    <p>
+
+    Permintaan pengambilan barang
+    Anda telah berhasil diterima
+    oleh sistem.
+
+    </p>
+
+    <br>
+
+    <p>
+
+    Data pengajuan telah diteruskan
+    kepada Admin PPIC untuk
+    dilakukan verifikasi dan
+    proses persetujuan.
+
+    </p>
+
+    <br>
+
+    <p>
+
+    🟡 Menunggu Persetujuan PPIC
+
+    </p>
+
+    `;
+
+    modal.classList.remove(
+        "hidden"
+    );
+
+}
+
+function closeModal(){
+
+    document
+    .getElementById(
+        "successModal"
+    )
+    .classList.add(
+        "hidden"
+    );
+
+}
+
+// =====================================
+// RIWAYAT
+// =====================================
+
+function simpanRiwayat(
+requestID,
+barang
+){
+
+    let data =
+    JSON.parse(
+        localStorage.getItem(
+            "riwayat"
+        )
+    ) || [];
+
+    data.unshift({
+
+        nomor:
+        requestID,
+
+        tanggal:
+        new Date()
+        .toLocaleString(),
+
+        status:
+        "🟡 Menunggu Persetujuan PPIC",
+
+        barang:
+        barang.length
+
+    });
+
+    localStorage.setItem(
+        "riwayat",
+        JSON.stringify(data)
+    );
+
+    renderRiwayat();
+
+}
+
+function renderRiwayat(){
+
+    const container =
+    document.getElementById(
+        "riwayatContainer"
+    );
+
+    const data =
+    JSON.parse(
+        localStorage.getItem(
+            "riwayat"
+        )
+    ) || [];
+
+    if(data.length===0){
+
+        container.innerHTML =
+        `
+        <div class="activity-item">
+        Belum ada pengajuan
+        </div>
+        `;
+
+        return;
+    }
+
+    container.innerHTML = "";
+
+    data.forEach(item=>{
+
+        container.innerHTML += `
+
+        <div class="activity-item">
+
+            <strong>
+
+            ${item.nomor}
+
+            </strong>
+
+            <br><br>
+
+            ${item.status}
+
+            <br><br>
+
+            ${item.tanggal}
+
+        </div>
+
+        `;
+
+    });
+
+}
